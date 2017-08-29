@@ -147,13 +147,16 @@ def main():
                 if x < block_width +x_block:
                     game_Over()
 
-        if x < x_block and x> x_block - block_move:
+        if x_block <(x - block_width) < x_block+ block_move:
             current_score +=1
 
         if 3 <= current_score <5:
             block_move =5.5
             gap = imageHeight * 3.7
 
+        if 5 <=current_score<8:
+            block_move=6
+            gap = imageHeight *3.5
 
         pygame.display.update()
         clock.tick(80)
