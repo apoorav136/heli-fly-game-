@@ -3,6 +3,16 @@ import pygame, time
 from random import  *
 black = (0, 0, 0)
 white = (255, 255, 255)
+sunset  = (253,72,47)
+
+greenyellow =(117, 20,246)
+brightblue = (47,228,253)
+orange = (211,255,206)
+yellow =(255,236,0)
+purple = (185,156,209)
+
+colorChoices = [greenyellow,brightblue,orange,yellow,purple]
+
 
 pygame.init()
 # here we are creating a surface for our game given some heights and width to it
@@ -20,10 +30,16 @@ clock = pygame.time.Clock()
 
 img = pygame.image.load('heli.jpg')
 
+def score(count):
+    font = pygame.font.Font('freesansbold.ttf', 20)
+    text = font.render("score : " + str(count), True, white)
+    surface.blit(text, [0,0])
 
-def blocks(x_block,y_block,block_width,block_height,gap):
-    pygame.draw.rect(surface,white,[x_block,y_block,block_width,block_height])
-    pygame.draw.rect(surface, white, [x_block, y_block+block_height+gap, block_width, surfaceHeight])
+
+def blocks(x_block,y_block,block_width,block_height,gap, colorChoice):
+
+    pygame.draw.rect(surface,colorChoice,[x_block,y_block,block_width,block_height])
+    pygame.draw.rect(surface, colorChoice, [x_block, y_block+block_height+gap, block_width, surfaceHeight])
 
 def replay_or_quit():
     for event in pygame.event.get([pygame.KEYDOWN, pygame.KEYUP, pygame.QUIT]):
@@ -81,8 +97,11 @@ def main():
     block_height = randint(0, (surfaceHeight/2))
     gap = imageHeight * 4.1
     block_move = 3
+    current_score = 0
+    blockColor = colorChoices[randrange(0,len(colorChoices))]
 
     game_over = False
+
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -100,7 +119,10 @@ def main():
 
         surface.fill(black)
         helicopter(x, y, img)
-        blocks(x_block, y_block, block_width, block_height,gap)
+
+        blocks(x_block, y_block, block_width, block_height,gap, blockColor)
+
+        score(current_score)
         x_block -= block_move
 
         if y > surfaceHeight - 40 or y < 0:
@@ -109,22 +131,28 @@ def main():
         if x_block <(-1*block_width):
             x_block = surfaceWidth
             block_height = randint(0,surfaceHeight/2)
-
+            blockColor = colorChoices[randrange(0, len(colorChoices))]
         if x + imageWidth > x_block:
             if x < x_block + block_width:
-                print ('possibly in boundary of x')
+
                 if y <   block_height:
-                    print ('y crossover upper')
+
                     if x -imageWidth < block_width + x_block:
-                        print ('game over hit upper')
+
                         game_Over()
         if x + imageWidth > x_block:
-            print ('x crossover')
+
             if y + imageHeight > block_height+gap:
-                print ('y crossover lower')
+
                 if x < block_width +x_block:
-                    print ('game over lower')
                     game_Over()
+
+        if x < x_block and x> x_block - block_move:
+            current_score +=1
+
+        if 3 <= current_score <5:
+            block_move =5.5
+            gap = imageHeight * 3.7
 
 
         pygame.display.update()
