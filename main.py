@@ -28,7 +28,7 @@ pygame.display.set_caption('heli-fly')
 # below code judges for how many times a frame is used in a second.
 clock = pygame.time.Clock()
 
-img = pygame.image.load('heli.jpg')
+img = pygame.image.load('heli.png')
 
 def score(count):
     font = pygame.font.Font('freesansbold.ttf', 20)
@@ -95,7 +95,7 @@ def main():
     y_block = 0
     block_width = 75
     block_height = randint(0, (surfaceHeight/2))
-    gap = imageHeight * 4.1
+    gap = imageHeight * 3.5
     block_move = 3
     current_score = 0
     blockColor = colorChoices[randrange(0,len(colorChoices))]
@@ -152,11 +152,14 @@ def main():
 
         if 3 <= current_score <5:
             block_move =5.5
-            gap = imageHeight * 3.7
+            gap = imageHeight * 3.2
 
         if 5 <=current_score<8:
             block_move=6
-            gap = imageHeight *3.5
+            gap = imageHeight *3
+        if 8<= current_score<10:
+            block_move=7
+            gap=imageHeight*2.9
 
         pygame.display.update()
         clock.tick(80)
